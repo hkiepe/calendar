@@ -20,7 +20,7 @@ const Nav = () => {
     <nav>
       <NavLink to="/" aria-label="Go to home">
         <img src={logomark} alt="" height={30} />
-        <span>OnlineZoukSchool</span>
+        <span>DanceCalendar</span>
       </NavLink>
       {context.loggedInUser.isLoggedIn && (
         <Form

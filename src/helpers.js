@@ -71,6 +71,8 @@ export const logOut = async ({ key }) => {
 };
 
 export const createUserInFirestore = async ({user}, userName) => {
+  console.log('user', user)
+  console.log('userName', userName)
   try {
     await setDoc(doc(collection(db, "users"), user.uid), {userName: userName, email: user.email, authId: user.uid})
   } catch (error) {
