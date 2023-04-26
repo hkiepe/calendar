@@ -1,102 +1,56 @@
-// react imports
-import { useEffect, useState } from "react";
-
-// rrd imports
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
-// firebase imports
-import { auth } from "./firebase-config";
-import { onAuthStateChanged } from "firebase/auth";
-
-// context
-import AuthContext from "./context/auth-context";
-
-// actions
-import { logoutAction } from "./actions/logout";
-
-// Library
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-// Video extension
-import 'video-react/dist/video-react.css';
-
-// Layouts
-import Main, { mainLoader } from "./layouts/Main";
-
-// Routes
-import Dashboard, { dashboardAction, dashboardLoader } from "./pages/Dashboard";
-import Error from "./pages/Error";
-
-// Paypal imports
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { fetchUserData } from "./helpers";
-
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Main />,
-    loader: mainLoader,
-    errorElement: <Error />,
-    children: [
-      {
-        index: true,
-        element: <Dashboard />,
-        loader: dashboardLoader,
-        action: dashboardAction,
-        errorElement: <Error />,
-      },
-      { path: "logout", action: logoutAction },
-    ],
-  },
-]);
-
-const initialOptions = {
-  "client-id": process.env.REACT_APP_PAYPAL_CLIENT_ID,
-  currency: "EUR",
-  components: "buttons",
-  // "card", "credit", "giropa", "sofort", "sepa", "paylater"
-  "disable-funding": ["card", "giropay", "sepa", "sofort"],
-  // "enable-funding": []
-};
-
-const reloadData = () => {
-  
-}
-
-function App() {
-  const [loggedInUser, setLoggedInUser] = useState({ isLoggedIn: false, userData: {} })
-
-  useEffect(() => {
-    onAuthStateChanged(auth, async (authUser) => {
-      if (authUser) {
-        // get the logged in user data from user table in firestore
-        try {
-        const userData = await fetchUserData(authUser.uid)
-        setLoggedInUser({ isLoggedIn: true, userData })
-        } catch (error) {
-          throw new Error("There was a problem fetching the user data");
-        }
-      } else {
-        setLoggedInUser({ isLoggedIn: false, userName: {} })
-      }
-    });
-  }, []);
-
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
+const { Header, Content, Footer } = Layout;
+const App = () => {
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
   return (
-    <div className="App">
-      <AuthContext.Provider value={{
-          loggedInUser: { isLoggedIn: loggedInUser.isLoggedIn, userData: loggedInUser.userData },
-          reloadData: reloadData
-        }}>
-        <PayPalScriptProvider options={initialOptions}>
-          <RouterProvider router={router} />
-          <ToastContainer />
-        </PayPalScriptProvider>
-      </AuthContext.Provider>
-    </div>
+    <Layout className="layout">
+      <Header>
+        <div className="logo" />
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={['2']}
+          items={
+              [{key: 1,
+              label: "nav 1",},{key: 2,
+                label: "nav 2",}, {key: 3,
+                  label: "nav 3",}]
+          }
+        />
+      </Header>
+      <Content
+        style={{
+          padding: '0 50px',
+        }}
+      >
+        <Breadcrumb
+          style={{
+            margin: '16px 0',
+          }}
+        >
+          <Breadcrumb.Item>Home</Breadcrumb.Item>
+          <Breadcrumb.Item>List</Breadcrumb.Item>
+          <Breadcrumb.Item>App</Breadcrumb.Item>
+        </Breadcrumb>
+        <div
+          className="site-layout-content"
+          style={{
+            background: colorBgContainer,
+          }}
+        >
+          Content
+        </div>
+      </Content>
+      <Footer
+        style={{
+          textAlign: 'center',
+        }}
+      >
+        ©2023 Created by Henrik
+      </Footer>
+    </Layout>
   );
-}
-
+};
 export default App;

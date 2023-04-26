@@ -76,6 +76,7 @@ export const createUserInFirestore = async ({user}, userName) => {
   try {
     await setDoc(doc(collection(db, "users"), user.uid), {userName: userName, email: user.email, authId: user.uid})
   } catch (error) {
+    console.log('error', error)
     throw new Error("There was a problem creating the user in the users collection.");
   }
 }

@@ -3,7 +3,7 @@ import {useContext} from "react"
 
 // Components
 import Intro from "../components/Intro";
-import MovieList from "../components/MovieList";
+import Calendar from "../components/Calendar";
 
 // helper functions
 import { createBudget, fetchData, registerUser, loginUser, createUserInFirestore } from "../helpers";
@@ -71,10 +71,9 @@ const Dashboard = () => {
       {context.loggedInUser.isLoggedIn ? (
         <div className="dashboard">
           <div className="grid--sm">
-            {/* {budgets ? () : ()} */}
             <div className="grid-lg">
               <div className="flex-lg">
-                <MovieList />
+                <Calendar />
               </div>
             </div>
           </div>

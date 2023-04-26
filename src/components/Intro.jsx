@@ -14,6 +14,8 @@ import { UserPlusIcon } from "@heroicons/react/24/solid";
 // assets
 import illustration from "../assets/illustration.jpg";
 
+import { DatePicker } from 'antd';
+
 function Intro() {
   const [register, setRegister] = useState(false);
 
